@@ -59,7 +59,7 @@ namespace WebApi_Kho.Controllers
 
             await context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok("Xóa thành công");
         }
 
         [HttpPut("{id}")]
