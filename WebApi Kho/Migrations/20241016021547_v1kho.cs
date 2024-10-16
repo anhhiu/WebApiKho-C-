@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebApi_Kho.Migrations
 {
     /// <inheritdoc />
-    public partial class khov1 : Migration
+    public partial class v1kho : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,7 @@ namespace WebApi_Kho.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: true)
+                    SupplierId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,7 +71,8 @@ namespace WebApi_Kho.Migrations
                         name: "FK_Products_Suppliers_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

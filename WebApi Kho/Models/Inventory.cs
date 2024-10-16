@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace WebApi_Kho.Models
 {
@@ -14,6 +15,6 @@ namespace WebApi_Kho.Models
 
         public int ProductId { get; set; }
         [ForeignKey(nameof(ProductId))]
-        public Product? Product { get; set; }
+        public Product? Products { get; set; }
     }
 }

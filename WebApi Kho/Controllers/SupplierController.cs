@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using WebApi_Kho.Databases;
-using WebApi_Kho.Models;
 
 namespace WebApi_Kho.Controllers
 {
@@ -19,15 +19,22 @@ namespace WebApi_Kho.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Supplier>>> GetSuppiler()
+        public async Task<ActionResult<IEnumerable<Models.Supplier>>> GetSuppiler()
         {
             return await context.Suppliers.ToListAsync();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Supplier>> CreateSupplier(Supplier supplier)
+        public async Task<ActionResult<Models.Supplier>> CreateSupplier(SupplierDTO supplierDTO)
         {
-            supplier.CreatedAt = DateTime.UtcNow;
+            Models.Supplier supplier = new Models.Supplier()
+            {
+                Name = supplierDTO.Name,
+                Email = supplierDTO.Email,
+                Phone = supplierDTO.Phone,
+                Address = supplierDTO.Address,
+
+            };
 
             context.Suppliers.Add(supplier);
 
@@ -37,7 +44,7 @@ namespace WebApi_Kho.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Supplier>> GetSuppilerById(int id)
+        public async Task<ActionResult<Models.Supplier>> GetSuppilerById(int id)
         {
             var supplier = await context.Suppliers.FindAsync(id);
 
@@ -49,7 +56,7 @@ namespace WebApi_Kho.Controllers
 
         [HttpDelete("{id}")]
 
-        public async Task<ActionResult<Supplier>> DeleteSupplier(int id)
+        public async Task<ActionResult<Models.Supplier>> DeleteSupplier(int id)
         {
             var supplier =await context.Suppliers.FindAsync(id);
 
@@ -65,26 +72,34 @@ namespace WebApi_Kho.Controllers
         [HttpPut("{id}")]
         
 
-        public async Task<ActionResult<Supplier>> UpdateSupplier(int id, Supplier supplier)
+        public async Task<ActionResult<Models.Supplier>> UpdateSupplier(int id, SupplierDTO supplierDTO)
         {
-            if (id != supplier.Id) return BadRequest();
+            var supplier = await context.Suppliers.FindAsync(id);
 
-            context.Entry(supplier).State = EntityState.Modified;
+            if (supplier == null) return NotFound();
 
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-              if  (!SupplierExits(id)) return BadRequest();
-              else throw;
-            }
+            supplier.Name = supplierDTO.Name;
+            supplier.Email = supplierDTO.Email;
+            supplier.Phone = supplierDTO.Phone;
+            supplier.Address = supplierDTO.Address;
+
+            await context.SaveChangesAsync();
 
             return Ok(supplier);
 
         }
-        private bool SupplierExits(int id) => context.Suppliers.Any(x => x.Id == id);
 
+    }
+
+    public class SupplierDTO
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public string Email { get; set; } = string.Empty;
+
+      
+        public string Phone { get; set; } = string.Empty;
+
+        public string Address { get; set; } = string.Empty;
     }
 }

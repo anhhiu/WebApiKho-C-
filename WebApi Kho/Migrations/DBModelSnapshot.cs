@@ -98,7 +98,7 @@ namespace WebApi_Kho.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SupplierId")
+                    b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -164,11 +164,15 @@ namespace WebApi_Kho.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApi_Kho.Models.Supplier", null)
+                    b.HasOne("WebApi_Kho.Models.Supplier", "Suppliers")
                         .WithMany("Products")
-                        .HasForeignKey("SupplierId");
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Categorys");
+
+                    b.Navigation("Suppliers");
                 });
 
             modelBuilder.Entity("WebApi_Kho.Models.Category", b =>

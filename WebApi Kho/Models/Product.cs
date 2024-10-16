@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace WebApi_Kho.Models
 {
@@ -22,11 +23,19 @@ namespace WebApi_Kho.Models
 
         public string ImageUrl { get; set; } = string.Empty;
 
+        [Required]
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
-        public Category? Categorys { get; set; }
+       
+        public Category? Category { get; set; }
 
+        [Required]
+        public int SupplierId { get; set; }
+
+        [ForeignKey(nameof(SupplierId))]
+       
+        public Supplier? Supplier { get; set; }
 
     }
 }
