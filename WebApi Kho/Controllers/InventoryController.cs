@@ -16,18 +16,7 @@ namespace WebApi_Kho.Controllers
             this.context = context;
         }
 
-        [HttpGet]
-
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetInventory()
-        {
-
-
-            return Ok();
-        }
     }
 
-    public class Inventory
-    {
 
-    }
 }
